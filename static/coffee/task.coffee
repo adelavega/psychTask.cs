@@ -1,4 +1,5 @@
-# psychTask.cs generic
+## psychTask.cs generic task
+## This is where most of your task goes
 
 ## Set up PsiTurk and preload the pages that will be shown after task is done
 psiTurk = PsiTurk(uniqueId, adServerLoc)
@@ -6,89 +7,12 @@ psiTurk.preloadPages(['postquestionnaire.html', 'debriefing.html'])
 
 all_stim = {"stim": [["stim1", "something"], ["stim2", "something"]]}
 
-instructions = [" This is the first instruction block \n
-You can separate lines with this \n\n
-Now there's two spaces"
-]
-
 # Some global variables
 trialLength = 5000
 IBI = 1000
 
-## Set up canvas
-c = document.getElementById("canvas")
-ctx = c.getContext("2d")
-width = canvas.width
-height = canvas.height
-
-# Calculates the mean of a numeric array (for feedback)
-mean = (numericArray) ->
-	sum = numericArray.reduce((a, b) -> a + b)
-	avg = sum / numericArray.length
-
-	return avg
-
-# Clears canvas
-clear_canvas = ->
-	ctx.clearRect(0, 0, canvas.width, canvas.height)# 
-
-# Writes multline text onto the canvas, and by default clears
-multilineText = (txt, x, y, font, lineheight=30, clear=true, fillColor='black') ->
-	clear_canvas() if clear
-
-	ctx.fillStyle = fillColor
-	ctx.font = font
-
-	if x is "center"
-		ctx.textAlign = "center"
-		x = canvas.width/2 
-	else
-		ctx.textAlign = "start"
-
-	y = canvas.height/2 if y is "center"
-
-	lines = txt.split('\n')
-	i = 0
-	while i < lines.length
-	  ctx.fillText lines[i], x, y + (i * lineheight)
-	  i++
-
-# Draws a circle. Can have a fill and edge colors, and can be put behind everything on the canvas
-drawCircle = (x, y, radius, fillColor=null, edgeColor='black', behind=true) ->
-	ctx.arc(x, y, radius, 0, 2 * Math.PI)
-
-	if behind
-		ctx.globalCompositeOperation="destination-over"
-	else
-		ctx.globalCompositeOperation="source-over"
-		
-	if edgecolor?
-		ctx.lineWidth = 4
-		ctx.strokeStyle = edgeColor
-		ctx.stroke()
-
-	if fillColor?
-		ctx.fillStyle = fillColor
-		ctx.fill()
-
-	ctx.globalCompositeOperation="source-over"
-
-# Hides left and right buttons
-hideButtons = ->
-	$("#leftButton").hide()
-	$("#rightButton").hide()
-
-# Sets the text of left and right buttoms
-keyText = (text, key, color) ->
-	if key is 'left'
-		$("#leftText").html(text)
-		$("#leftButton").show()
-		$("#leftButton").css('background-color',color)
-	else
-		$("#rightText").html(text)
-		$("#rightButton").show()
-		$("#rightButton").css('background-color',color)
-
+## Global session class
+## Iterates through blocks and other events such as instructions
 class Session
 	constructor: (@blocks) ->
 		hideButtons()
