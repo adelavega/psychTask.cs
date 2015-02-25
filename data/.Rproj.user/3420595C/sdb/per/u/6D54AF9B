@@ -1,0 +1,17 @@
+{
+    "contents" : "library(dplyr)\nlibrary(ggplot2)\n\nqs <- read.csv(\"questiondata.csv\", header=FALSE, col.names=c(\"ID\", \"question\", \"value\") )\ntask_data <- read.csv(\"../data/task_data.csv\")\n\nalpha_subs <- c(\"A149ROBL26JWPJ:3X65QVEQI163TBCXP7E2MB4GUO4LCM\", \"A1XOXGWBAN6HEJ:34QN5IT0T0AOKCXYJ2CEM5G91Z780T\", \"A2B8HPIZDKYKDR:3BXQMRHWK0HJLNBIBA0HGU5B1TZUM5\",\"A2HHKBW8HQWI66:3DQQ64TANH42YUX0YQ7AFMK3RELPWV\",\"A3Q198AX290HZD:3ZY8KE4ISKMAJHYA8TH3TPRZP16VQJ\",\"AA3L3CZRK6VIR:3Z4AIRP3C7WE62JONTS6G9GCX0LX1S\",\"AHJQDF8PAHVDP:3M0NZ3JDP2H2ZFKMPYI3GK94HGP5ZG\",\"AKLV0WIZZ356X:3JNQLM5FT55QVTKVSEPWAYVUIXQ2LT\",\"AO7FM98CP90CL:3WAKVUDHUXZ00K4V74YSXC8L648U7Y\",\"AVHZJ2HQJG3NB:3TK8OJTYM24PJ5XV8G2ETK1PK5KVPS\",\"AVI7K876BV3QL:3S4AW7T80C10Y7ZIWS8K3DSS2BML48\")\nqs <- qs %>% filter(ID %in% alpha_subs == FALSE)\n\nqs %>% group_by(ID, question) %>% summarise(mean(value))\n\n",
+    "created" : 1423878381179.000,
+    "dirty" : true,
+    "encoding" : "",
+    "folds" : "",
+    "hash" : "97106585",
+    "id" : "6F60CD77",
+    "lastKnownWriteTime" : 0,
+    "path" : null,
+    "project_path" : null,
+    "properties" : {
+        "tempName" : "Untitled1"
+    },
+    "source_on_save" : false,
+    "type" : "r_source"
+}
