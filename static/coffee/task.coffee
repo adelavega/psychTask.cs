@@ -117,7 +117,7 @@ class Session
 			# When block ends, call exitBlock with argument
 			# Argument is whether to continue or go back (instructions)
 			@currBlock.start ((arg1) => @exitBlock arg1)
-	
+
 	# Go back a block	
 	prevBlock: ->
 		if @blockNumber > 1
@@ -260,7 +260,7 @@ class Block
 # This extention of block adds accuracy feedback and displays it after block is over
 class PracticeBlock extends Block
 	constructor: (@condition, @message, @trials, @minacc) ->
-		super @condition @message @trials
+		super @condition, @message, @trials
 
 	endBlock: ->
 		@feedback()
@@ -357,15 +357,15 @@ class Trial
 		if @inactive is false
 			@inactive = true
 
-			# Iff accuracy is 'NA', it means user did not response before trial ended
-			if @acc is 'NA'
-				multilineText("You took too long!", "center", canvas.height/2+140, "30px Arial", lineheight = 20, clear=false)
-				drawCircle(canvas.width/2, canvas.height/2-40, 100, fillColor = 'lightyellow')
-			else
-				drawCircle(canvas.width/2, canvas.height/2-40, 100, fillColor = 'lightyellow')
+		# If accuracy is 'NA', it means user did not response before trial ended
+		if @acc is 'NA'
+			multilineText("You took too long!", "center", canvas.height/2+140, "30px Arial", lineheight = 20, clear=false)
+			drawCircle(canvas.width/2, canvas.height/2-40, 100, fillColor = 'lightyellow')
+		else
+			drawCircle(canvas.width/2, canvas.height/2-40, 100, fillColor = 'lightyellow')
 
-			# After ITI, end trial and give data to block in JSON format
-			setTimeout (=> @exitTrial({'rt': @rt, 'resp': @resp, 'acc': @acc}), ITI
+		# After ITI, end trial and give data to block in JSON format
+		setTimeout (=> @exitTrial({'rt': @rt, 'resp': @resp, 'acc': @acc})), ITI
 
 	# This gets called if a key is pressed. 
 	logResponse: (resp) ->
@@ -427,13 +427,13 @@ jQuery ->
 blocks = [
 	new Instruction instructions[0], "Back"
 	new Slide1 instructions[1]
-	new LivingKeyMap "Show this text!!", "Back"
+	new Instruction "Show this text!!", "Back"
 
 	## This is how you create a block. Pass arguments and then itirate over a list of stimuli to create New trials
 	## In this case it makes a PracticeBlock of new PracFeedbackTrials from all_stim
-	new PracticeBlock "nameofPracticeBlock", "Initial message", (new PracFeedbackTrial(n[0], n[1]) for n in all_stim['stim'])
+	new PracticeBlock "nameofPracticeBlock", "Initial message", (new Trial(n[0], n[1]) for n in all_stim['stim'])
 	new Instruction instructions[9], null, "Continue"
-	new Block "nameofSecondBlock", "Set an inital message", (new FeedbackTrial(n[0], n[1]) for n in all_stim['stim'])
+	new Block "nameofSecondBlock", "Set an inital message", (new Trial(n[0], n[1]) for n in all_stim['stim'])
 
 	# Include this to show questionnaire and debriefing
 	new Questionnaire
